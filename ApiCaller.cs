@@ -8,6 +8,13 @@ namespace ParallelStaf
     {
         public static List<string> processedISBNCache = new List<string>();
 
+        public List<List<string>> PrepareISBNBatches(List<string> isbnList, int batchSize)
+        {
+            return Enumerable.Range(0, (isbnList.Count + batchSize - 1) / batchSize)
+                .Select(i => isbnList.Skip(i * batchSize).Take(batchSize).ToList())
+                .ToList();
+        }
+
 
         public async Task<List<string[]>> ProcessISBNBatch(List<string> isbnBatch)
         {
