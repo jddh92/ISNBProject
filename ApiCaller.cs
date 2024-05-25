@@ -7,13 +7,7 @@ namespace ParallelStaf
     public class ApiCaller
     {
         public static List<string> processedISBNCache = new List<string>();
-
-        public List<List<string>> PrepareISBNBatches(List<string> isbnList, int batchSize)
-        {
-            return Enumerable.Range(0, (isbnList.Count + batchSize - 1) / batchSize)
-                .Select(i => isbnList.Skip(i * batchSize).Take(batchSize).ToList())
-                .ToList();
-        }
+        
 
         public async Task<List<string[]>> ProcessISBNBatch(List<string> isbnBatch)
         {
@@ -83,16 +77,7 @@ namespace ParallelStaf
                 // Aquí puedes procesar y almacenar la información obtenida en un CSV o realizar acciones adicionales
                 Console.WriteLine($"ISBN: {isbn}, Title: {title},  Subtitle: {subtitle}, Author Name(s): {author}, Pages: {pages}, Publish Date: {publishDate}");
 
-
-                DataRetrievalType dataRetrievalType = processedISBNCache.Contains(isbn) ? DataRetrievalType.Cache : DataRetrievalType.Server;
-                string retrievalType = dataRetrievalType.ToString();
-
-
-                if (dataRetrievalType == DataRetrievalType.Server)
-                {
-                    processedISBNCache.Add(isbn); // Agregar ISBN a la lista de caché
-                }
-                return new[] { retrievalType, isbn, title, subtitle, author, pages, publishDate };
+                
             }
             else
             {
