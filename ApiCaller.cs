@@ -7,7 +7,7 @@ namespace ParallelStaf
     public class ApiCaller
     {
         public static List<string> processedISBNCache = new List<string>();
-        
+
 
         public async Task<List<string[]>> ProcessISBNBatch(List<string> isbnBatch)
         {
@@ -45,7 +45,6 @@ namespace ParallelStaf
                     subtitle = "N/A";
                 }
 
-
                 //Get the author or authors
                 JArray authorsArray = bookInfo[$"ISBN:{isbn}"]["authors"];
 
@@ -62,8 +61,6 @@ namespace ParallelStaf
                     author = author.Remove(author.Length - 2); // Remueve la última coma y el espacio
                 }
 
-
-
                 string pages = bookInfo[$"ISBN:{isbn}"]["number_of_pages"];
                 if (string.IsNullOrEmpty(pages))
                 {
@@ -72,12 +69,18 @@ namespace ParallelStaf
                 string publishDate = bookInfo[$"ISBN:{isbn}"]["publish_date"];
 
 
-
-
                 // Aquí puedes procesar y almacenar la información obtenida en un CSV o realizar acciones adicionales
                 Console.WriteLine($"ISBN: {isbn}, Title: {title},  Subtitle: {subtitle}, Author Name(s): {author}, Pages: {pages}, Publish Date: {publishDate}");
+                DataRetrievalType dataRetrievalType = processedISBNCache.Contains(isbn) ? DataRetrievalType.Cache : DataRetrievalType.Server;
+                string retrievalType = dataRetrievalType.ToString();
 
-                
+
+                if (dataRetrievalType == DataRetrievalType.Server)
+                {
+                    processedISBNCache.Add(isbn); // Agregar ISBN a la lista de caché
+                }
+                return new[] { retrievalType, isbn, title, subtitle, author, pages, publishDate };
+
             }
             else
             {
