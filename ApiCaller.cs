@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static ISNBProject.Enum;
 
 namespace ParallelStaf
 {
