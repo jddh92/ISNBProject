@@ -1,41 +1,30 @@
 ﻿using ParallelStaf;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ISNBProject
 {
-    internal class Program
+    public class Program
     {
         public static async Task Main(string[] args)
         {
             string filePath = "C:\\ProyectoNet\\ParallelStaf\\InputFile\\InputFile.txt";
             string outPath = "C:\\ProyectoNet\\ParallelStaf\\OutPutCSV\\output.csv";
 
-            FileReaderClass fileProcessor = new FileReaderClass();
-            ApiCaller apiCaller = new ApiCaller();
-            CSVWriter csvWriter = new CSVWriter();
+            var httpClient = new HttpClient();
+            var fileProcessor = new FileReaderClass();
+            var apiCaller = new ApiCaller(httpClient);
+            var csvWriter = new CSVWriter();
 
-            List<string[]> allISBNs = await ProcessISBNs(filePath, apiCaller, fileProcessor);
-            await WriteProcessedISBNsToCSV(outPath, csvWriter, allISBNs);
+            var isbnList = await fileProcessor.GetISBNList(filePath);
+            var isbnBatches = apiCaller.PrepareISBNBatches(isbnList, batchSize: 10);
 
-        }
+            var tasks = isbnBatches.Select(apiCaller.ProcessISBNBatch).ToList();
+            var processedISBNs = (await Task.WhenAll(tasks)).SelectMany(x => x).ToList();
 
-        private static async Task<List<string[]>> ProcessISBNs(string filePath, ApiCaller apiCaller, FileReaderClass fileProcessor)
-        {
-            List<string> isbnList = await fileProcessor.GetISBNList(filePath);
-            List<List<string>> isbnBatches = apiCaller.PrepareISBNBatches(isbnList, batchSize: 10);
-
-            List<string[]> allISBNs = new List<string[]>();
-            foreach (var isbnBatch in isbnBatches)
-            {
-                List<string[]> processedBatch = await apiCaller.ProcessISBNBatch(isbnBatch);
-                allISBNs.AddRange(processedBatch);
-            }
-
-            return allISBNs;
-        }
-
-        private static async Task WriteProcessedISBNsToCSV(string outputPath, CSVWriter csvWriter, List<string[]> processedISBNs)
-        {
-            await csvWriter.WriteToCSV(outputPath, processedISBNs);
+            await csvWriter.WriteToCSV(outPath, processedISBNs);
         }
     }
 }

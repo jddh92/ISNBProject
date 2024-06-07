@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISNBProject", "ISNBProject.csproj", "{E02A2CE5-B3C9-4016-A71D-7DF11D9A0DEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ISNBProject", "ISNBProject.csproj", "{E02A2CE5-B3C9-4016-A71D-7DF11D9A0DEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISNBProjectUnitTest", "..\ISNBProjectUnitTest\ISNBProjectUnitTest.csproj", "{DA12AF03-D988-4054-855F-CB4CCB916623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E02A2CE5-B3C9-4016-A71D-7DF11D9A0DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E02A2CE5-B3C9-4016-A71D-7DF11D9A0DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E02A2CE5-B3C9-4016-A71D-7DF11D9A0DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA12AF03-D988-4054-855F-CB4CCB916623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA12AF03-D988-4054-855F-CB4CCB916623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA12AF03-D988-4054-855F-CB4CCB916623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA12AF03-D988-4054-855F-CB4CCB916623}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

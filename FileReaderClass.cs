@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ISNBProject
@@ -10,24 +8,15 @@ namespace ISNBProject
     {
         public async Task<List<string>> GetISBNList(string filePath)
         {
-            List<string> isbnList = new List<string>();
-
-            try
+            var isbnList = new List<string>();
+            using (var reader = new StreamReader(filePath))
             {
-                StreamReader reader = new StreamReader(filePath);
+                while (!reader.EndOfStream)
                 {
-                    string line;
-                    while ((line = await reader.ReadLineAsync()) != null)
-                    {
-                        isbnList.AddRange(line.Split(',').Select(isbn => isbn.Trim()));
-                    }
+                    var line = await reader.ReadLineAsync();
+                    isbnList.Add(line);
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al leer el archivo: {ex.Message}");
-            }
-
             return isbnList;
         }
     }
